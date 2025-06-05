@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Gun types instead of book genres -->
+    <bean id="pistol" class="com.example.springEducation.Pistol" />
+    <bean id="shotgun" class="com.example.springEducation.Shotgun" />
+    <bean id="sniper" class="com.example.springEducation.Sniper" />
+
+    <!-- GunDisplayer instead of BookDisplayer -->
+    <bean id="gunDisplayer" class="com.example.springEducation.GunDisplayer"
+          scope="singleton" init-method="init" destroy-method="cleanup">
+        <constructor-arg ref="pistol" />
+    </bean>
+
+</beans>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Оружие</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<section>
+    <h1>Информация об оружии</h1>
+    <p><strong>Модель:</strong> <span th:text="${gun.model}"></span></p>
+    <p><strong>Производитель:</strong> <span th:text="${gun.manufacturer}"></span></p>  <!-- fixed here -->
+    <p><strong>Тип:</strong> <span th:text="${gun.category}"></span></p>           <!-- fixed here -->
+    <p><strong>Калибр:</strong> <span th:text="${gun.caliber}"></span></p>
+</section>
+
+</body>
+</html>

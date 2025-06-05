@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Название оружия</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<section class="info-gun">
+    <div>
+        <a href="/guns">← Назад к списку</a>
+        <a th:href="@{/edit-gun(id=${gun.id})}">Редактировать</a>
+        <a th:href="@{/delete-gun(id=${gun.id})}">Удалить</a>
+    </div>
+    <div>
+        <h1 th:text="${gun.title}">Название оружия</h1>
+        <p><strong>ID:</strong> <span th:text="${gun.id}"></span></p>
+        <p><strong>Производитель:</strong> <span th:text="${gun.manufacturer}"></span></p>
+        <p><strong>Категория:</strong> <span th:text="${gun.category}"></span></p>
+        <p><strong>Калибр:</strong> <span th:text="${gun.caliber}"></span></p>
+    </div>
+</section>
+</body>
+</html>

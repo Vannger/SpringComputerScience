@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактировать оружие</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<section class="edit-gun">
+    <div>
+        <a href="/guns">Назад к списку оружия</a>
+        <h1>Редактировать оружие</h1>
+    </div>
+    <form th:action="@{/edit-gun}" method="post">
+        <input type="hidden" name="id" th:value="${gun.id}" />
+
+        <label for="model">Модель:</label>
+        <input type="text" id="model" name="model" th:value="${gun.model}" required />
+
+        <label for="manufacturer">Производитель:</label>
+        <select id="manufacturer" name="manufacturer" required>
+            <option th:each="man : ${manufacturers}"
+                    th:value="${man.name}"
+                    th:text="${man.name}"
+                    th:selected="${man.name == gun.manufacturer}">
+            </option>
+        </select>
+
+        <label for="category">Тип:</label>
+        <select id="category" name="category" required>
+            <option value="Pistol" th:selected="${gun.category == 'Pistol'}">Пистолет</option>
+            <option value="Rifle" th:selected="${gun.category == 'Rifle'}">Винтовка</option>
+            <option value="Shotgun" th:selected="${gun.category == 'Shotgun'}">Дробовик</option>
+            <option value="Sniper" th:selected="${gun.category == 'Sniper'}">Снайперская винтовка</option>
+        </select>
+
+        <label for="caliber">Калибр:</label>
+        <input type="text" id="caliber" name="caliber" th:value="${gun.caliber}" required />
+
+        <button type="submit">Сохранить</button>
+    </form>
+</section>
+</body>
+</html>

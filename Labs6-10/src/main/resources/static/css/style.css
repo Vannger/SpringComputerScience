@@ -1,0 +1,156 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+}
+
+button {
+    cursor: pointer;
+    padding: 8px 12px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+a {
+    display: inline-block;
+    color: #007BFF;
+    text-decoration: none;
+    transition: text-decoration 0.2s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Book / Gun List Section */
+.list-book,
+.list-gun {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 40px;
+    margin: 0;
+}
+
+.list-book td,
+.list-gun td {
+    padding: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Filter form */
+.max-filter {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Info Sections */
+.info-book,
+.info-gun {
+    padding: 20px;
+}
+
+/* Add / Edit Book or Gun Section */
+.add-book,
+.edit-book,
+.add-gun,
+.edit-gun {
+    padding: 20px;
+    max-width: 300px;
+}
+
+.add-book form,
+.edit-book form,
+.add-gun form,
+.edit-gun form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Input and select styling */
+input[type="text"],
+input[type="number"],
+select {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Guns specific styles */
+
+/* Example container for gun list */
+.list-gun {
+    background-color: #fff8e1; /* light yellow background */
+    border: 1px solid #ffe082;
+    border-radius: 8px;
+}
+
+/* Highlight gun names */
+.list-gun td:first-child {
+    font-weight: 600;
+    color: #bf360c; /* dark orange */
+}
+
+/* Buttons in gun forms can have different color */
+.add-gun button,
+.edit-gun button {
+    background-color: #bf360c;
+}
+
+.add-gun button:hover,
+.edit-gun button:hover {
+    background-color: #e64a19;
+}
+
+/* Info gun section */
+.info-gun {
+    background-color: #fff3e0; /* very light orange */
+    border-radius: 8px;
+    border: 1px solid #ffcc80;
+}
+
+/* Links in gun pages */
+.info-gun a {
+    color: #d84315;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    .list-book,
+    .list-gun,
+    .add-book,
+    .edit-book,
+    .add-gun,
+    .edit-gun {
+        padding: 15px;
+        max-width: 100%;
+    }
+}

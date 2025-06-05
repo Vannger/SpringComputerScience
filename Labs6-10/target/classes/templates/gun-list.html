@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Список оружия</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<section class="list-gun">
+    <h1>Все оружие</h1>
+    <a href="/add-gun">➕ Добавить оружие</a>
+    <div>
+        <form class="caliber-filter" th:action="@{/guns}" method="get">
+            <label for="maxCaliber">Максимальный калибр:</label>
+            <input type="number" id="maxCaliber" name="maxCaliber" th:value="${maxCaliber}" min="0"/>
+            <button type="submit">Фильтр</button>
+        </form>
+    </div>
+    <div>
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Модель</th>
+                <th>Подробнее</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="gun : ${guns}">
+                <td th:text="${gun.model}"></td>
+                <td><a th:href="@{/gun(id=${gun.id})}">Подробнее</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>
