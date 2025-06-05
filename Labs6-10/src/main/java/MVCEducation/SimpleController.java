@@ -7,10 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Controller
 public class SimpleController {
@@ -123,14 +122,14 @@ public class SimpleController {
         return "edit-gun";
     }
 
-    @PatchMapping("/edit-gun")
-    @ResponseBody
-    public String patchGun(
+    @PostMapping("/edit-gun")
+    public String editGun(
             @RequestParam int id,
-            @RequestParam(required = false) String modelName,
-            @RequestParam(required = false) String manufacturer,
-            @RequestParam(required = false) Integer caliber,
-            @RequestParam(required = false) String type) {
+            @RequestParam String model,
+            @RequestParam String manufacturer,
+            @RequestParam String category,
+            @RequestParam int caliber,
+            RedirectAttributes redirectAttributes) {
 
         Gun existingGun = gunDisplayer.getGuns().stream()
                 .filter(g -> g.getId() == id)
@@ -138,41 +137,34 @@ public class SimpleController {
                 .orElse(null);
 
         if (existingGun == null) {
-            return "Оружие с ID " + id + " не найдено";
+            redirectAttributes.addFlashAttribute("errorMessage", "Оружие с ID " + id + " не найдено");
+            return "redirect:/guns";
         }
 
-        // Update fields if provided
-        if (modelName != null) existingGun.setModel(modelName);
-        if (manufacturer != null) existingGun.setManufacturer(manufacturer);
-        if (caliber != null) existingGun.setCaliber(caliber);
+        gunDisplayer.getGuns().remove(existingGun);
 
-        if (type != null && !type.equals(existingGun.getClass().getSimpleName())) {
-            // Replace the object with a new type
-            gunDisplayer.getGuns().removeIf(g -> g.getId() == id);
-
-            Gun newGun;
-            switch (type) {
-                case "Pistol":
-                    newGun = new Pistol(id, modelName, manufacturer, caliber);
-                    break;
-                case "Rifle":
-                    newGun = new Rifle(id, modelName, manufacturer, caliber);
-                    break;
-                case "Shotgun":
-                    newGun = new Shotgun(id, modelName, manufacturer, caliber);
-                    break;
-                case "Sniper":
-                    newGun = new Sniper(id, modelName, manufacturer, caliber);
-                    break;
-                default:
-                    return "Некорректный тип оружия";
-            }
-
-            gunDisplayer.getGuns().add(newGun);
-            return "Объект с ID " + id + " заменён на новый тип: " + type;
+        Gun updatedGun;
+        switch (category) {
+            case "Pistol":
+                updatedGun = new Pistol(id, model, manufacturer, caliber);
+                break;
+            case "Rifle":
+                updatedGun = new Rifle(id, model, manufacturer, caliber);
+                break;
+            case "Shotgun":
+                updatedGun = new Shotgun(id, model, manufacturer, caliber);
+                break;
+            case "Sniper":
+                updatedGun = new Sniper(id, model, manufacturer, caliber);
+                break;
+            default:
+                redirectAttributes.addFlashAttribute("errorMessage", "Некорректная категория");
+                return "redirect:/guns";
         }
 
-        return "Оружие с ID " + id + " обновлено.";
+        gunDisplayer.getGuns().add(updatedGun);
+        redirectAttributes.addFlashAttribute("successMessage", "Оружие успешно обновлено");
+        return "redirect:/guns";
     }
 
     @DeleteMapping("/delete-gun")
@@ -185,6 +177,4 @@ public class SimpleController {
         }
         return "redirect:/guns";
     }
-
-
 }
