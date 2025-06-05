@@ -17,6 +17,11 @@ public class Sniper implements Gun {
         this.model = model;
     }
 
+    @Override
+    public void setCaliber(Integer caliber) {
+
+    }
+
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }

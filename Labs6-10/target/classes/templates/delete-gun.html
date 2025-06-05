@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Удалить оружие</title>
+</head>
+<body>
+
+<h2>Вы уверены, что хотите удалить это оружие?</h2>
+
+<p>Модель: <span th:text="${gun.model}"></span></p>
+<p>Производитель: <span th:text="${gun.manufacturer}"></span></p>
+<p>Калибр: <span th:text="${gun.caliber}"></span></p>
+
+<form th:action="@{/delete-gun}" method="post">
+    <input type="hidden" name="_method" value="DELETE"/>
+    <input type="hidden" name="id" th:value="${gun.id}" />
+
+    <button type="submit">✅ Подтвердить удаление</button>
+    <button type="button" onclick="window.location.href='/guns'">❌ Отмена</button>
+</form>
+
+</body>
+</html>

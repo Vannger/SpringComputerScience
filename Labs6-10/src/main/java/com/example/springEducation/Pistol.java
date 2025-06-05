@@ -32,6 +32,11 @@ public class Pistol implements Gun {
     }
 
     @Override
+    public void setCaliber(Integer caliber) {
+
+    }
+
+    @Override
     public String getManufacturer() {
         return manufacturer;
     }

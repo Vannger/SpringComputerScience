@@ -26,6 +26,11 @@ public class Shotgun implements Gun {
     }
 
     @Override
+    public void setCaliber(Integer caliber) {
+
+    }
+
+    @Override
     public int getId() {
         return id;
     }

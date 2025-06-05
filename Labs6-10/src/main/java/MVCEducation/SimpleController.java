@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -121,54 +123,68 @@ public class SimpleController {
         return "edit-gun";
     }
 
-    @PostMapping("/edit-gun")
-    public String editGun(
+    @PatchMapping("/edit-gun")
+    @ResponseBody
+    public String patchGun(
             @RequestParam int id,
-            @RequestParam String type,
-            @RequestParam String modelName,
-            @RequestParam String manufacturer,
-            @RequestParam int caliber,
-            Model model) {
-        if (manufacturers.stream().noneMatch(m -> m.getManufacturer().equals(manufacturer))) {
-            model.addAttribute("errorMessage", "Производитель не найден");
-            return "error";
+            @RequestParam(required = false) String modelName,
+            @RequestParam(required = false) String manufacturer,
+            @RequestParam(required = false) Integer caliber,
+            @RequestParam(required = false) String type) {
+
+        Gun existingGun = gunDisplayer.getGuns().stream()
+                .filter(g -> g.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (existingGun == null) {
+            return "Оружие с ID " + id + " не найдено";
         }
 
-        Gun newGun;
-        switch (type) {
-            case "Pistol":
-                newGun = new Pistol(id, modelName, manufacturer, caliber);
-                break;
-            case "Rifle":
-                newGun = new Rifle(id, modelName, manufacturer, caliber);
-                break;
-            case "Shotgun":
-                newGun = new Shotgun(id, modelName, manufacturer, caliber);
-                break;
-            case "Sniper":
-                newGun = new Sniper(id, modelName, manufacturer, caliber);
-                break;
-            default:
-                model.addAttribute("errorMessage", "Некорректный тип оружия");
-                return "error";
+        // Update fields if provided
+        if (modelName != null) existingGun.setModel(modelName);
+        if (manufacturer != null) existingGun.setManufacturer(manufacturer);
+        if (caliber != null) existingGun.setCaliber(caliber);
+
+        if (type != null && !type.equals(existingGun.getClass().getSimpleName())) {
+            // Replace the object with a new type
+            gunDisplayer.getGuns().removeIf(g -> g.getId() == id);
+
+            Gun newGun;
+            switch (type) {
+                case "Pistol":
+                    newGun = new Pistol(id, modelName, manufacturer, caliber);
+                    break;
+                case "Rifle":
+                    newGun = new Rifle(id, modelName, manufacturer, caliber);
+                    break;
+                case "Shotgun":
+                    newGun = new Shotgun(id, modelName, manufacturer, caliber);
+                    break;
+                case "Sniper":
+                    newGun = new Sniper(id, modelName, manufacturer, caliber);
+                    break;
+                default:
+                    return "Некорректный тип оружия";
+            }
+
+            gunDisplayer.getGuns().add(newGun);
+            return "Объект с ID " + id + " заменён на новый тип: " + type;
         }
 
-        gunDisplayer.getGuns().removeIf(g -> g.getId() == id);
-        gunDisplayer.getGuns().add(newGun);
-        logger.info("Отредактировано оружие с ID: " + id);
-        return "redirect:/guns";
+        return "Оружие с ID " + id + " обновлено.";
     }
 
-    @GetMapping("/delete-gun")
-    public String deleteGun(@RequestParam int id, Model model) {
-        logger.info("Запрос удаления оружия с ID: " + id);
+    @DeleteMapping("/delete-gun")
+    public String deleteGun(@RequestParam int id, RedirectAttributes redirectAttributes) {
         boolean removed = gunDisplayer.getGuns().removeIf(g -> g.getId() == id);
-        if (!removed) {
-            logger.warning("Оружие с ID " + id + " не найдено");
-            model.addAttribute("errorMessage", "Оружие с ID " + id + " не найдено");
-            return "error";
+        if (removed) {
+            redirectAttributes.addFlashAttribute("successMessage", "Оружие успешно удалено");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Не удалось удалить оружие с ID " + id);
         }
-        logger.info("Удалено оружие с ID: " + id);
         return "redirect:/guns";
     }
+
+
 }

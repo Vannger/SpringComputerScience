@@ -12,20 +12,20 @@
     <div>
         <h1>Добавить оружие</h1>
         <form th:action="@{/add-gun}" method="post">
-            <label for="category">Тип оружия:</label>
-            <select id="category" name="category" required>
+            <label for="type">Тип оружия:</label>
+            <select id="type" name="type" required>
                 <option value="Pistol">Пистолет</option>
                 <option value="Rifle">Винтовка</option>
                 <option value="Shotgun">Дробовик</option>
                 <option value="Sniper">Снайперская винтовка</option>
             </select>
 
-            <label for="model">Модель:</label>
-            <input type="text" id="model" name="model" required/>
+            <label for="modelName">Модель:</label>
+            <input type="text" id="modelName" name="modelName" required/>
 
             <label for="manufacturer">Производитель:</label>
             <select id="manufacturer" name="manufacturer" required>
-                <option th:each="manuf : ${manufacturers}" th:value="${manuf.name}" th:text="${manuf.name}"></option>
+                <option th:each="manuf : ${manufacturers}" th:value="${manuf.manufacturer}" th:text="${manuf.manufacturer}"></option>
             </select>
 
             <label for="caliber">Калибр:</label>

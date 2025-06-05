@@ -13,15 +13,15 @@
     <form th:action="@{/edit-gun}" method="post">
         <input type="hidden" name="id" th:value="${gun.id}" />
 
-        <label for="model">Модель:</label>
-        <input type="text" id="model" name="model" th:value="${gun.model}" required />
+        <label for="model">Название:</label>
+        <input type="text" id="model" name="model" th:value="${gun.model}">
 
         <label for="manufacturer">Производитель:</label>
         <select id="manufacturer" name="manufacturer" required>
             <option th:each="man : ${manufacturers}"
-                    th:value="${man.name}"
-                    th:text="${man.name}"
-                    th:selected="${man.name == gun.manufacturer}">
+                    th:value="${man.manufacturer}"
+                    th:text="${man.manufacturer}"
+                    th:selected="${man.manufacturer == gun.manufacturer}">
             </option>
         </select>
 
